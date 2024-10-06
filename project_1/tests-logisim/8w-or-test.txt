@@ -1,0 +1,10 @@
+# 8 Way OR.
+# If any value in the 8 bit input (8 ways) is true, then the output is true.
+# In other words, OR every bit of the input.
+
+i[8] o
+00000000 0
+11111111 1
+00010000 1
+00000001 1
+00100110 1
