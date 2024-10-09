@@ -596,10 +596,135 @@
     <wire from="(70,350)" to="(80,350)"/>
     <wire from="(90,310)" to="(100,310)"/>
   </circuit>
-  <circuit name="ram_8">
+  <circuit name="ram_4">
     <a name="appearance" val="logisim_evolution"/>
-    <a name="circuit" val="ram_8"/>
+    <a name="circuit" val="ram_4"/>
     <a name="circuitnamedboxfixedsize" val="true"/>
     <a name="simulationFrequency" val="1.0"/>
+    <comp lib="0" loc="(100,240)" name="Pin">
+      <a name="appearance" val="NewPins"/>
+      <a name="label" val="load"/>
+    </comp>
+    <comp lib="0" loc="(100,270)" name="Pin">
+      <a name="appearance" val="NewPins"/>
+      <a name="label" val="clock"/>
+    </comp>
+    <comp lib="0" loc="(120,370)" name="Pin">
+      <a name="appearance" val="NewPins"/>
+      <a name="label" val="addr"/>
+      <a name="width" val="2"/>
+    </comp>
+    <comp lib="0" loc="(130,270)" name="Tunnel">
+      <a name="label" val="clck"/>
+    </comp>
+    <comp lib="0" loc="(140,320)" name="Pin">
+      <a name="appearance" val="NewPins"/>
+      <a name="label" val="i"/>
+      <a name="radix" val="10unsigned"/>
+      <a name="width" val="16"/>
+    </comp>
+    <comp lib="0" loc="(450,260)" name="Tunnel">
+      <a name="facing" val="east"/>
+      <a name="label" val="clck"/>
+    </comp>
+    <comp lib="0" loc="(450,350)" name="Tunnel">
+      <a name="facing" val="east"/>
+      <a name="label" val="clck"/>
+    </comp>
+    <comp lib="0" loc="(450,440)" name="Tunnel">
+      <a name="facing" val="east"/>
+      <a name="label" val="clck"/>
+    </comp>
+    <comp lib="0" loc="(450,530)" name="Tunnel">
+      <a name="facing" val="east"/>
+      <a name="label" val="clck"/>
+    </comp>
+    <comp lib="0" loc="(710,250)" name="Pin">
+      <a name="appearance" val="NewPins"/>
+      <a name="facing" val="west"/>
+      <a name="label" val="o"/>
+      <a name="output" val="true"/>
+      <a name="radix" val="10unsigned"/>
+      <a name="width" val="16"/>
+    </comp>
+    <comp lib="2" loc="(230,240)" name="Demultiplexer">
+      <a name="select" val="2"/>
+    </comp>
+    <comp lib="2" loc="(230,320)" name="Demultiplexer">
+      <a name="select" val="2"/>
+      <a name="width" val="16"/>
+    </comp>
+    <comp lib="2" loc="(710,250)" name="Multiplexer">
+      <a name="select" val="2"/>
+      <a name="width" val="16"/>
+    </comp>
+    <comp lib="4" loc="(450,190)" name="Register">
+      <a name="appearance" val="evolution"/>
+      <a name="width" val="16"/>
+    </comp>
+    <comp lib="4" loc="(450,280)" name="Register">
+      <a name="appearance" val="logisim_evolution"/>
+      <a name="width" val="16"/>
+    </comp>
+    <comp lib="4" loc="(450,370)" name="Register">
+      <a name="appearance" val="logisim_evolution"/>
+      <a name="width" val="16"/>
+    </comp>
+    <comp lib="4" loc="(450,460)" name="Register">
+      <a name="appearance" val="logisim_evolution"/>
+      <a name="width" val="16"/>
+    </comp>
+    <wire from="(100,240)" to="(230,240)"/>
+    <wire from="(100,270)" to="(130,270)"/>
+    <wire from="(120,370)" to="(210,370)"/>
+    <wire from="(140,320)" to="(230,320)"/>
+    <wire from="(210,260)" to="(210,370)"/>
+    <wire from="(210,260)" to="(250,260)"/>
+    <wire from="(210,370)" to="(210,570)"/>
+    <wire from="(210,370)" to="(250,370)"/>
+    <wire from="(210,570)" to="(690,570)"/>
+    <wire from="(250,340)" to="(250,370)"/>
+    <wire from="(270,220)" to="(300,220)"/>
+    <wire from="(270,230)" to="(290,230)"/>
+    <wire from="(270,240)" to="(280,240)"/>
+    <wire from="(270,250)" to="(270,260)"/>
+    <wire from="(270,260)" to="(360,260)"/>
+    <wire from="(270,300)" to="(340,300)"/>
+    <wire from="(270,310)" to="(450,310)"/>
+    <wire from="(270,320)" to="(340,320)"/>
+    <wire from="(270,330)" to="(330,330)"/>
+    <wire from="(280,240)" to="(280,250)"/>
+    <wire from="(280,250)" to="(380,250)"/>
+    <wire from="(290,230)" to="(290,240)"/>
+    <wire from="(290,240)" to="(390,240)"/>
+    <wire from="(300,220)" to="(300,230)"/>
+    <wire from="(300,230)" to="(450,230)"/>
+    <wire from="(330,330)" to="(330,490)"/>
+    <wire from="(330,490)" to="(450,490)"/>
+    <wire from="(340,220)" to="(340,300)"/>
+    <wire from="(340,220)" to="(450,220)"/>
+    <wire from="(340,320)" to="(340,400)"/>
+    <wire from="(340,400)" to="(450,400)"/>
+    <wire from="(360,260)" to="(360,510)"/>
+    <wire from="(360,510)" to="(450,510)"/>
+    <wire from="(380,250)" to="(380,420)"/>
+    <wire from="(380,420)" to="(450,420)"/>
+    <wire from="(390,240)" to="(390,320)"/>
+    <wire from="(390,320)" to="(450,320)"/>
+    <wire from="(450,230)" to="(450,240)"/>
+    <wire from="(450,310)" to="(460,310)"/>
+    <wire from="(450,320)" to="(450,330)"/>
+    <wire from="(510,220)" to="(670,220)"/>
+    <wire from="(510,310)" to="(550,310)"/>
+    <wire from="(510,400)" to="(570,400)"/>
+    <wire from="(510,490)" to="(590,490)"/>
+    <wire from="(550,240)" to="(550,310)"/>
+    <wire from="(550,240)" to="(670,240)"/>
+    <wire from="(570,250)" to="(570,400)"/>
+    <wire from="(570,250)" to="(670,250)"/>
+    <wire from="(590,260)" to="(590,490)"/>
+    <wire from="(590,260)" to="(670,260)"/>
+    <wire from="(670,220)" to="(670,230)"/>
+    <wire from="(690,270)" to="(690,570)"/>
   </circuit>
 </project>
