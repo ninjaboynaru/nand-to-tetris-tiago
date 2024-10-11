@@ -1,0 +1,13 @@
+
+pseudo L1 {
+	int result = 0
+	int index = 0
+
+	int R0
+	int R1
+
+	while (index < R1) {
+		R0 = R0 + R0
+		index = index + 1
+	}
+}
