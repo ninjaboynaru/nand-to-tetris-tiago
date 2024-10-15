@@ -51,6 +51,13 @@
     <tool lib="4" name="D Flip-Flop"/>
     <tool lib="4" name="Register"/>
   </toolbar>
+  <circuit name="main">
+    <a name="appearance" val="logisim_evolution"/>
+    <a name="circuit" val="main"/>
+    <a name="circuitnamedboxfixedsize" val="true"/>
+    <a name="simulationFrequency" val="1.0"/>
+    <comp loc="(320,200)" name="adder_16b"/>
+  </circuit>
   <circuit name="adder_half">
     <a name="appearance" val="evolution"/>
     <a name="circuit" val="adder_half"/>
@@ -626,10 +633,37 @@
     <wire from="(960,110)" to="(960,190)"/>
   </circuit>
   <circuit name="alu">
-    <a name="appearance" val="logisim_evolution"/>
+    <a name="appearance" val="custom"/>
     <a name="circuit" val="alu"/>
     <a name="circuitnamedboxfixedsize" val="true"/>
     <a name="simulationFrequency" val="1.0"/>
+    <appear>
+      <rect height="4" stroke="none" width="10" x="51" y="88"/>
+      <text dominant-baseline="alphabetic" fill="#404040" font-family="Courier 10 Pitch" font-size="12" text-anchor="start" x="64" y="92">x</text>
+      <text dominant-baseline="alphabetic" fill="#404040" font-family="Courier 10 Pitch" font-size="12" text-anchor="start" x="113" y="61">zx</text>
+      <text dominant-baseline="alphabetic" fill="#404040" font-family="Courier 10 Pitch" font-size="12" text-anchor="start" x="86" y="63">f</text>
+      <text dominant-baseline="alphabetic" fill="#404040" font-family="Courier 10 Pitch" font-size="12" text-anchor="start" x="144" y="61">nx</text>
+      <text dominant-baseline="alphabetic" fill="#404040" font-family="Courier 10 Pitch" font-size="12" text-anchor="start" x="235" y="63">no</text>
+      <rect height="4" stroke="none" width="10" x="51" y="118"/>
+      <text dominant-baseline="alphabetic" fill="#404040" font-family="Courier 10 Pitch" font-size="12" text-anchor="start" x="65" y="121">y</text>
+      <text dominant-baseline="alphabetic" fill="#404040" font-family="Courier 10 Pitch" font-size="12" text-anchor="start" x="175" y="62">zy</text>
+      <text dominant-baseline="alphabetic" fill="#404040" font-family="Courier 10 Pitch" font-size="12" text-anchor="start" x="204" y="61">ny</text>
+      <rect height="4" stroke="none" width="10" x="260" y="108"/>
+      <text dominant-baseline="alphabetic" fill="#404040" font-family="Courier 10 Pitch" font-size="12" text-anchor="end" x="251" y="113">val</text>
+      <rect height="20" stroke="none" width="200" x="60" y="140"/>
+      <rect fill="none" height="109" stroke="#000000" stroke-width="2" width="199" x="60" y="50"/>
+      <text dominant-baseline="alphabetic" fill="#ffffff" font-family="Courier 10 Pitch" font-size="14" font-weight="bold" text-anchor="middle" x="160" y="154">alu</text>
+      <circ-anchor facing="east" x="270" y="110"/>
+      <circ-port dir="in" pin="210,210" x="90" y="50"/>
+      <circ-port dir="in" pin="280,150" x="50" y="90"/>
+      <circ-port dir="in" pin="280,300" x="50" y="120"/>
+      <circ-port dir="in" pin="310,180" x="120" y="50"/>
+      <circ-port dir="in" pin="310,330" x="180" y="50"/>
+      <circ-port dir="in" pin="440,210" x="150" y="50"/>
+      <circ-port dir="in" pin="440,360" x="210" y="50"/>
+      <circ-port dir="in" pin="930,270" x="240" y="50"/>
+      <circ-port dir="out" pin="1050,230" x="270" y="110"/>
+    </appear>
     <comp lib="0" loc="(1050,230)" name="Pin">
       <a name="appearance" val="NewPins"/>
       <a name="facing" val="west"/>
