@@ -4,8 +4,6 @@ import * as readline from 'readline'
 
 import { computeTable, destinationTable } from './instructionTables'
 
-const hackBinary = []
-
 function shouldIgnoreLine(line: string): boolean {
 	const isComment = line.trim().startsWith("//")
 	const isEmpty = line.trim().length === 0
@@ -25,11 +23,15 @@ async function main() {
 		throw new Error('No file path argument provided');
 	}
 
-	const fileStream = fs.createReadStream(filePath);
+	const readStream = fs.createReadStream(filePath);
 	const lineReader = readline.createInterface({
-		input: fileStream,
+		input: readStream,
 		crlfDelay: Infinity
 	})
+
+	const fileName = path.parse(filePath).name
+	const outputPath = `./out/${fileName}.hack`
+	const writeStream = fs.createWriteStream(outputPath)
 
 	for await (const line of lineReader) {
 		if(shouldIgnoreLine(line)) {
@@ -37,11 +39,12 @@ async function main() {
 		}
 
 		const firstChar = line[0]
+		let hackBinaryLine: string
 
 		if (firstChar === '@') {
 			const addressValue = line.slice(1)
 			const addressValueBinary = intStringToBinary(addressValue)
-			hackBinary.push(`0${addressValueBinary}`)
+			hackBinaryLine = `0${addressValueBinary}`
 		}
 		else {
 			const equalSignIndex = line.indexOf('=')
@@ -51,14 +54,14 @@ async function main() {
 			const computeBinary = computeTable[computationToken]
 			const destinationBinary = destinationTable[destinationToken]
 			
-			const hackBinaryValue = `111${computeBinary}${destinationBinary}000`
-			hackBinary.push(hackBinaryValue)
-
+			hackBinaryLine = `111${computeBinary}${destinationBinary}000`
 		}
+
+		writeStream.write(hackBinaryLine + '\n');
 	}
 
-	const fileName = path.parse(filePath).name
-	await fs.promises.writeFile(`./out/${fileName}.hack`, hackBinary.join('\n'))
+	
+	writeStream.end()
 }
 
 main()
