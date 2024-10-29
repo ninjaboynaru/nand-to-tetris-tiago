@@ -1,0 +1,9 @@
+{
+  "name": "hack_assembler",
+  "private": "true",
+  "scripts": {},
+  "type": "module",
+  "devDependencies": {
+    "@types/node": "^22.8.2"
+  }
+}
