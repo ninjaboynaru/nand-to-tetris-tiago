@@ -4,6 +4,17 @@ import * as readline from 'readline'
 
 import { computeTable, destinationTable } from './instructionTables'
 
+enum InstructionType {
+	ADDRESS,
+	COMPUTATION,
+	JUMP
+}
+
+type Line = {
+	tokens: string[]
+	type: InstructionType
+}
+
 function shouldIgnoreLine(line: string): boolean {
 	const isComment = line.trim().startsWith("//")
 	const isEmpty = line.trim().length === 0
@@ -14,6 +25,37 @@ function shouldIgnoreLine(line: string): boolean {
 function intStringToBinary(value: string) {
 	const num = parseInt(value, 10);
 	return num.toString(2).padStart(15, '0');
+}
+
+function tokenizeLine(lineText: string): Line {
+	const line: Line = {
+		tokens: [],
+		type: null
+	}
+
+	const addressLexemeIndex = lineText.indexOf('@')
+	const equalLexemeIndex = lineText.indexOf('=')
+	const semicolonLexemeIndex = lineText.indexOf(';')
+
+	if (addressLexemeIndex !== -1) {
+		line.tokens.push(lineText.substring(addressLexemeIndex + 1))
+		console.log('---: ', line.tokens)
+		line.type = InstructionType.ADDRESS
+	}
+	else if (equalLexemeIndex !== -1) {
+		const destinationToken = lineText.substring(0, equalLexemeIndex)
+		const computationToken = lineText.substring(equalLexemeIndex+1)
+		line.tokens.push(destinationToken, computationToken)
+		line.type = InstructionType.COMPUTATION
+	}
+	else if (semicolonLexemeIndex) {
+		const valueToken = lineText.substring(0, semicolonLexemeIndex)
+		const jumpToken = lineText.substring(semicolonLexemeIndex)
+		line.tokens.push(valueToken, jumpToken)
+		line.type = InstructionType.JUMP
+	}
+
+	return line
 }
 
 async function main() {
@@ -33,26 +75,21 @@ async function main() {
 	const outputPath = `./out/${fileName}.hack`
 	const writeStream = fs.createWriteStream(outputPath)
 
-	for await (const line of lineReader) {
-		if(shouldIgnoreLine(line)) {
+	for await (const lineText of lineReader) {
+		if(shouldIgnoreLine(lineText)) {
 			continue
 		}
 
-		const firstChar = line[0]
+		const line = tokenizeLine(lineText)
+		
 		let hackBinaryLine: string
 
-		if (firstChar === '@') {
-			const addressValue = line.slice(1)
-			const addressValueBinary = intStringToBinary(addressValue)
-			hackBinaryLine = `0${addressValueBinary}`
+		if (line.type === InstructionType.ADDRESS) {
+			hackBinaryLine = `0${intStringToBinary(line.tokens[0])}`
 		}
-		else {
-			const equalSignIndex = line.indexOf('=')
-			const destinationToken = line.slice(0, equalSignIndex)
-			const computationToken = line.slice(equalSignIndex+1)
-
-			const computeBinary = computeTable[computationToken]
-			const destinationBinary = destinationTable[destinationToken]
+		else if (line.type === InstructionType.COMPUTATION) {
+			const destinationBinary = destinationTable[line.tokens[0]]
+			const computeBinary = computeTable[line.tokens[1]]
 			
 			hackBinaryLine = `111${computeBinary}${destinationBinary}000`
 		}

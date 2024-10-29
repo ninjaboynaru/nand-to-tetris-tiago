@@ -1,9 +1,12 @@
 {
   "name": "hack_assembler",
   "private": "true",
-  "scripts": {},
+  "scripts": {
+	"assemble": "tsx index.ts"
+  },
   "type": "module",
   "devDependencies": {
-    "@types/node": "^22.8.2"
+    "@types/node": "^22.8.2",
+    "tsx": "^4.19.2"
   }
 }
