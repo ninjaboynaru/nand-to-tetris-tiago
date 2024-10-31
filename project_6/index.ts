@@ -15,6 +15,34 @@ type Line = {
 	type: InstructionType
 }
 
+const symbolTable: Record<string, number> = {
+	R0: 0,
+	R1: 1,
+	R2: 2,
+	R3: 3,
+	R4: 4,
+	R5: 5,
+	R6: 6,
+	R7: 7,
+	R8: 8,
+	R9: 9,
+	R10: 10,
+	R11: 11,
+	R12: 12,
+	R13: 13,
+	R14: 14,
+	R15: 15,
+	SP: 0,
+	LCL: 1,
+	ARG: 2,
+	THIS: 3,
+	THAT: 4,
+	SCREEN: 16384,
+	KBD: 24576
+}
+
+let nextSymbolLocation = 16
+
 function shouldIgnoreLine(line: string): boolean {
 	const isComment = line.trim().startsWith("//")
 	const isEmpty = line.trim().length === 0
@@ -22,9 +50,17 @@ function shouldIgnoreLine(line: string): boolean {
 	return isComment || isEmpty
 }
 
-function intStringToBinary(value: string) {
-	const num = parseInt(value, 10);
+function intStringToBinary(value: string | number) {
+	let num: number
+	if (typeof value === 'string') {
+		num = parseInt(value, 10);
+	}
+	
 	return num.toString(2).padStart(15, '0');
+}
+
+function isValidNumber(value: string) {
+	return /^-?\d*\.?\d+$/.test(value);
 }
 
 function tokenizeLine(lineText: string): Line {
@@ -39,7 +75,6 @@ function tokenizeLine(lineText: string): Line {
 
 	if (addressLexemeIndex !== -1) {
 		line.tokens.push(lineText.substring(addressLexemeIndex + 1))
-		console.log('---: ', line.tokens)
 		line.type = InstructionType.ADDRESS
 	}
 	else if (equalLexemeIndex !== -1) {
@@ -58,6 +93,58 @@ function tokenizeLine(lineText: string): Line {
 	return line
 }
 
+function parseLine(line: Line): string {
+	let parsedLine: string
+
+	if (line.type === InstructionType.ADDRESS) {
+		parsedLine = `0${intStringToBinary(line.tokens[0])}`
+	}
+	else if (line.type === InstructionType.COMPUTATION) {
+		const destinationBinary = destinationTable[line.tokens[0]]
+		const computeBinary = computeTable[line.tokens[1]]
+		
+		parsedLine = `111${computeBinary}${destinationBinary}000`
+	}
+
+	return parsedLine
+}
+
+function processSymbols(line: Line, lineNumber) {
+	if (line.type === InstructionType.ADDRESS) {
+		const value = line.tokens[0]
+
+		if (!isValidNumber(value)) {
+			const symbolValue = symbolTable[value]
+			if (symbolValue === undefined) {
+				symbolTable[symbolValue] = nextSymbolLocation
+				nextSymbolLocation += 1
+			}
+			else {
+				line.tokens[0] = symbolValue.toString()
+			}
+		}
+	}
+}
+
+async function processFile(filePath, callback) {
+	const readStream = fs.createReadStream(filePath);
+	const lineReader = readline.createInterface({
+		input: readStream,
+		crlfDelay: Infinity
+	});
+
+	let lineNumber = 0
+
+	for await (const lineText of lineReader) {
+		if(shouldIgnoreLine(lineText)) {
+			continue
+		}
+		
+		await callback(lineText, lineNumber);
+		lineNumber += 1
+	}
+}
+
 async function main() {
 	const filePath = process.argv[2]
 
@@ -65,39 +152,22 @@ async function main() {
 		throw new Error('No file path argument provided');
 	}
 
-	const readStream = fs.createReadStream(filePath);
-	const lineReader = readline.createInterface({
-		input: readStream,
-		crlfDelay: Infinity
-	})
-
 	const fileName = path.parse(filePath).name
 	const outputPath = `./out/${fileName}.hack`
 	const writeStream = fs.createWriteStream(outputPath)
 
-	for await (const lineText of lineReader) {
-		if(shouldIgnoreLine(lineText)) {
-			continue
-		}
-
+	await processFile(filePath, (lineText, lineNumber) => {
 		const line = tokenizeLine(lineText)
-		
-		let hackBinaryLine: string
+		checkSymbolTable(line, lineNumber)
+	})
 
-		if (line.type === InstructionType.ADDRESS) {
-			hackBinaryLine = `0${intStringToBinary(line.tokens[0])}`
-		}
-		else if (line.type === InstructionType.COMPUTATION) {
-			const destinationBinary = destinationTable[line.tokens[0]]
-			const computeBinary = computeTable[line.tokens[1]]
-			
-			hackBinaryLine = `111${computeBinary}${destinationBinary}000`
-		}
+	await processFile(filePath, (lineText) => {
+		const line = tokenizeLine(lineText)
+		const binary = parseLine(line)
 
-		writeStream.write(hackBinaryLine + '\n');
-	}
+		writeStream.write(binary + '\n');
+	})
 
-	
 	writeStream.end()
 }
 
