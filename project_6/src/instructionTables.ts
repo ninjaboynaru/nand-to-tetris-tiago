@@ -1,6 +1,5 @@
 
-const destinationTable = {
-	'null': '000',
+const destinationTable: Record<string, string> = {
 	'M': '001',
 	'D': '010',
 	'MD': '011',
@@ -10,8 +9,7 @@ const destinationTable = {
 	'AMD': '111'
 }
 
-const jumpTable = {
-	'null': '000',
+const jumpTable: Record<string, string> = {
 	'JGT': '001',
 	'JEQ': '010',
 	'JGE': '011',
@@ -21,7 +19,7 @@ const jumpTable = {
 	'JMP': '111'
 };
 
-const computeTable = {
+const computeTable: Record<string, string> = {
 	'0': '0101010',
 	'1': '0111111',
 	'-1': '0111010',

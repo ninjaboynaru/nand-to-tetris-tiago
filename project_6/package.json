@@ -2,7 +2,7 @@
   "name": "hack_assembler",
   "private": "true",
   "scripts": {
-	"assemble": "tsx index.ts"
+	"assemble": "tsx src/index.ts"
   },
   "type": "module",
   "devDependencies": {
